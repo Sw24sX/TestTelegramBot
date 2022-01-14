@@ -6,6 +6,7 @@ import com.example.testtelegrambot.enums.State;
 import com.example.testtelegrambot.repository.UsersRepository;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -53,9 +54,11 @@ public class RegistrationHandler implements Handler {
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne));
 
-        return List.of(createMessageTemplate(user).setText(String.format(
-                "Your name is saved as: %s", user.getName()))
-                .setReplyMarkup(inlineKeyboardMarkup));
+        SendMessage message = createMessageTemplate(user);
+        message.setText(String.format("Your name is saved as: %s", user.getName()));
+        message.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(message);
     }
 
     private List<PartialBotApiMethod<? extends Serializable>> checkName(Users user, String message) {
@@ -72,9 +75,11 @@ public class RegistrationHandler implements Handler {
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne));
 
-        return List.of(createMessageTemplate(user)
-                .setText(String.format("You have entered: %s%nIf this is correct - press the button", user.getName()))
-                .setReplyMarkup(inlineKeyboardMarkup));
+        SendMessage sendMessage = createMessageTemplate(user);
+        sendMessage.setText(String.format("You have entered: %s%nIf this is correct - press the button", user.getName()));
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(sendMessage);
     }
 
     private List<PartialBotApiMethod<? extends Serializable>> changeName(Users user) {
@@ -90,9 +95,12 @@ public class RegistrationHandler implements Handler {
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne));
 
-        return List.of(createMessageTemplate(user).setText(String.format(
-                "Your current name is: %s%nEnter new name or press the button to continue", user.getName()))
-                .setReplyMarkup(inlineKeyboardMarkup));
+        SendMessage message = createMessageTemplate(user);
+        message.setText(String.format(
+                "Your current name is: %s%nEnter new name or press the button to continue", user.getName()));
+        message.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(message);
     }
 
     @Override

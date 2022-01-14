@@ -5,6 +5,7 @@ import com.example.testtelegrambot.domain.Users;
 import com.example.testtelegrambot.enums.State;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -28,9 +29,12 @@ public class HelpHandler implements Handler {
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne));
 
-        return List.of(createMessageTemplate(user).setText(String.format("" +
-                "You've asked for help %s? Here it comes!", user.getName()))
-                .setReplyMarkup(inlineKeyboardMarkup));
+        SendMessage sendMessage = createMessageTemplate(user);
+        sendMessage.setText(String.format("" +
+                "You've asked for help %s? Here it comes!", user.getName()));
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(sendMessage);
     }
 
     @Override

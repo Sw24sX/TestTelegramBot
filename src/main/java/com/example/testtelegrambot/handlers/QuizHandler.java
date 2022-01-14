@@ -8,6 +8,7 @@ import com.example.testtelegrambot.repository.QuestionRepository;
 import com.example.testtelegrambot.repository.UsersRepository;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -76,9 +77,11 @@ public class QuizHandler implements Handler {
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne));
 
-        return List.of(createMessageTemplate(user)
-                .setText(String.format("Incorrect!%nYou scored *%d* points!", currentScore))
-                .setReplyMarkup(inlineKeyboardMarkup));
+        SendMessage message = createMessageTemplate(user);
+        message.setText(String.format("Incorrect!%nYou scored *%d* points!", currentScore));
+        message.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(message);
     }
 
     private List<PartialBotApiMethod<? extends Serializable>> startNewQuiz(Users user) {
@@ -114,8 +117,8 @@ public class QuizHandler implements Handler {
 
             final String callbackData = options.get(i).equalsIgnoreCase(question.getAnswerCorrect()) ? QUIZ_CORRECT : QUIZ_INCORRECT;
 
-            button.setText(OPTIONS.get(i))
-                    .setCallbackData(String.format("%s %d", callbackData, question.getId()));
+            button.setText(OPTIONS.get(i));
+            button.setCallbackData(String.format("%s %d", callbackData, question.getId()));
 
             if (i < 2) {
                 inlineKeyboardButtonsRowOne.add(button);
@@ -127,9 +130,12 @@ public class QuizHandler implements Handler {
         }
 
         inlineKeyboardMarkup.setKeyboard(List.of(inlineKeyboardButtonsRowOne, inlineKeyboardButtonsRowTwo));
-        return List.of(createMessageTemplate(user)
-                .setText(sb.toString())
-                .setReplyMarkup(inlineKeyboardMarkup));
+
+        SendMessage message = createMessageTemplate(user);
+        message.setText(sb.toString());
+        message.setReplyMarkup(inlineKeyboardMarkup);
+
+        return List.of(message);
     }
 
 
