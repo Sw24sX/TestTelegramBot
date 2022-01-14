@@ -97,11 +97,11 @@ public class RegistrationHandler implements Handler {
 
     @Override
     public State operatedBotState() {
-        return null;
+        return State.ENTER_NAME;
     }
 
     @Override
     public List<String> operatedCallBackQuery() {
-        return null;
+        return List.of(NAME_ACCEPT, NAME_CHANGE, NAME_CHANGE_CANCEL);
     }
 }

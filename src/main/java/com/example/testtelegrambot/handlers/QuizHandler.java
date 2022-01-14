@@ -135,7 +135,7 @@ public class QuizHandler implements Handler {
 
     @Override
     public State operatedBotState() {
-        return null;
+        return State.PLAYING_QUIZ;
     }
 
     @Override
